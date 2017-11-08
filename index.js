@@ -1,5 +1,4 @@
 const gcs = require('@google-cloud/storage')()
-const fetch = require('node-fetch')
 const { head, path, prop, toLower, pipe, pipeP, invoker,
         tap, concat, __ } = require('ramda')
 
