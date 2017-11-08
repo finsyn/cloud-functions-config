@@ -1,0 +1,15 @@
+{
+  "name": "cloud-functions-config",
+  "version": "0.0.0",
+  "description": "Get per-project config for your cloud functions from a json file on GCS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "tornilssonohrn@gmail.com",
+  "license": "MIT",
+  "dependencies": {
+    "@google-cloud/storage": "~1.4.0",
+    "ramda": "~0.25.0"
+  }
+}
