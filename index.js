@@ -1,13 +1,13 @@
 const gcs = require('@google-cloud/storage')()
 const { head, path, prop, toLower, pipe, pipeP, invoker,
         tap, concat, __ } = require('ramda')
+const { getBucketName, parseFileBuffer } = require('./config.js')
+
+// cached config
+let config = null
 
 const getGCSBucket = pipe(
-  () => process.env,
-  tap(console.log),
-  prop('GCP_PROJECT'),
-  toLower,
-  concat(__, '-config-private'),
+  getBucketName,
   name => gcs.bucket(name)
 )
 
@@ -17,12 +17,14 @@ const getFileBufferP = pipe(
   invoker(0, 'download')
 )
 
-const configP = pipeP(
-  getFileBufferP,
-  pipe(
-    head,
-    data => JSON.parse(data.toString())
-  )
-)
+const configP = () => {
+  if (config) { return Promise.resolve(config) }
+  else {
+    return pipeP(
+      getFileBufferP,
+      parseFileBuffer
+    )()
+  }
+}
 
-exports.config = configP
+module.exports = configP
