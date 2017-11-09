@@ -1,5 +1,5 @@
 const t = require('tap')
-const { setEnvVars, getBucketName, parseFileBuffer } = require('./config.js')
+const { getEnvVars, setEnvVars, getBucketName, parseFileBuffer } = require('./config.js')
 
 t.test('should get bucket name according to convention', t => {
   projectName = 'test-123'
@@ -17,14 +17,15 @@ t.test('should parse json buffer to js object', t => {
   t.end()
 })
 
-t.test('method to set env vars should work', t => {
+t.test('method to get and set env vars should work', t => {
   const config = {
-    test: '123',
+    test_num: '123',
     enabled: true 
   }
   setEnvVars(config)
-  t.equals(process.env.test, '123')
-  t.ok(process.env.enabled)
+  const { test_num, enabled } = getEnvVars()
+  t.equals(test_num, '123')
+  t.ok(enabled)
   t.end()
 })
 
