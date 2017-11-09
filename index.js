@@ -1,6 +1,6 @@
 const gcs = require('@google-cloud/storage')()
 const { forEachObjIndexed, pipe, pipeP, invoker } = require('ramda')
-const { getEnvVars, setEnvVars, getBucketName, parseFileBuffer } = require('./config.js')
+const { getConfigVal, getConfig, setConfig, getBucketName, parseFileBuffer } = require('./config.js')
 
 const getFileBufferP = pipe(
   getBucketName,
@@ -20,6 +20,7 @@ const init = pipeP(
 )
 
 module.exports = {
-  init,
-  get: getEnvVars
+  initConfig,
+  getConfigVal: getConfigVal,
+  getConfig: getConfig
 }

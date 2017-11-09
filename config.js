@@ -20,25 +20,37 @@ const setEnvVar = (val, key) => {
   process.env[`${envPrefix}${key}`] = val
 }
 
-const setEnvVars = forEachObjIndexed(setEnvVar)
+const setConfig = forEachObjIndexed(setEnvVar)
 const isCFCKey = test(new RegExp(`^${envPrefix}[a-z]+`))
+const addPrefix = concat(envPrefix)
+const rmPrefix = replace(envPrefix, '')
+const getEnv = () => process.env
+const getEnvVar = key => process.env[key]
 
-const getEnvVars = pipe(
-  () => process.env,
+const getConfig = pipe(
+  getEnv,
   keys,
   filter(isCFCKey),
   converge(
     zipObj, [
-      map(replace(envPrefix, '')),
-      map(key => process.env[key])
+      map(rmPrefix),
+      map(getEnvVar)
     ]
   )
+)
+
+const getConfigVal = converge(
+  prop, [
+    addPrefix,
+    getEnv
+  ]
 )
 
 module.exports = {
   getBucketName,
   parseFileBuffer,
-  setEnvVars,
-  getEnvVars
+  setConfig,
+  getConfig,
+  getConfigVal
 }
 
