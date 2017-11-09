@@ -1,6 +1,6 @@
 {
   "name": "cloud-functions-config",
-  "version": "0.0.1",
+  "version": "0.0.2-0",
   "description": "Get per-project config for your cloud functions from a json file on GCS",
   "main": "index.js",
   "scripts": {
