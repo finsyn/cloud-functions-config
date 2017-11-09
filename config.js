@@ -1,4 +1,4 @@
-const { head, prop, toLower, pipe, 
+const { head, prop, toLower, pipe, forEachObjIndexed,
         concat, __ } = require('ramda')
 
 const getBucketName = pipe(
@@ -13,8 +13,15 @@ const parseFileBuffer = pipe(
   data => JSON.parse(data.toString())
 )
 
+const setEnvVar = (val, key) => {
+  process.env[key] = val
+}
+
+const setEnvVars = forEachObjIndexed(setEnvVar)
+
 module.exports = {
   getBucketName,
-  parseFileBuffer
+  parseFileBuffer,
+  setEnvVars
 }
 
