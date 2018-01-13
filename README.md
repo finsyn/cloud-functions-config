@@ -12,7 +12,6 @@ In the [GCP docs] it is implied that you should set up one project per environme
 ### Method
 1. `cloud-functions-config` uses `process.env.GCP_PROJECT` to find out which bucket to fetch the config from.
 2. once the `config.json` file has been fetched the JSON key-values are added to `process.env` under keys prefixed with `cfc__`).
-
 ### Prerequisites
 
 - a GCS bucket named `[project-ID]-config-private` that your cloud functions has permission to read from (this should be enabled by default)
@@ -27,10 +26,11 @@ npm i cloud-functions-config
 ```javascript
 const { initConfig, getConfig } = require('cloud-functions-config')
 
+// initConfig will only requests config from GCS if none has been set yet
 initConfig()
-  .then(() => {
+  .then(config => {
       // app logic
-      console.log(getConfig())
+      console.log(config)
       // { token: 'xxxxxx', ... } 
     })
 ```
