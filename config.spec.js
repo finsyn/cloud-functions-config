@@ -1,5 +1,6 @@
 const t = require('tap')
-const { getConfigVal, getConfig, setConfig, getBucketName, parseFileBuffer } = require('./config.js')
+const { getConfigVal, getConfig, setConfig, getBucketName,
+        parseFileBuffer, isConfigInitiated, clearConfig } = require('./config.js')
 
 t.test('should get bucket name according to convention', t => {
   projectName = 'test-123'
@@ -37,6 +38,22 @@ t.test('method to set and get a single env vars should work', t => {
   setConfig(config)
   const test_num = getConfigVal('test_num')
   t.equals(test_num, '123')
+  t.end()
+})
+
+t.test('should be able to tell that config has been initiated', t => {
+  clearConfig()
+  const config = {
+    key: 'set'
+  }
+  setConfig(config)
+  t.ok(isConfigInitiated())
+  t.end()
+})
+
+t.test('should be able to tell that config has NOT been initiated', t => {
+  clearConfig()
+  t.notOk(isConfigInitiated())
   t.end()
 })
 

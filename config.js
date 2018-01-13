@@ -1,6 +1,6 @@
 const { head, prop, toLower, pipe, forEachObjIndexed,
-        concat, __, map, converge, identity,
-        test, keys, filter, zipObj, replace } = require('ramda')
+        concat, __, map, converge, identity, not,
+        test, keys, filter, zipObj, replace, isEmpty } = require('ramda')
 
 const envPrefix = 'cfc__'
 
@@ -27,10 +27,15 @@ const rmPrefix = replace(envPrefix, '')
 const getEnv = () => process.env
 const getEnvVar = key => process.env[key]
 
-const getConfig = pipe(
+const getConfigKeys = pipe(
   getEnv,
   keys,
-  filter(isCFCKey),
+  filter(isCFCKey)
+)
+
+
+const getConfig = pipe(
+  getConfigKeys,
   converge(
     zipObj, [
       map(rmPrefix),
@@ -46,11 +51,24 @@ const getConfigVal = converge(
   ]
 )
 
+const isConfigInitiated = pipe(
+  getConfigKeys,
+  keys,
+  isEmpty,
+  not
+)
+
+const clearConfig = pipe(
+  getConfigKeys,
+  map(key => delete process.env[key])
+)
+
 module.exports = {
+  clearConfig,
   getBucketName,
+  isConfigInitiated,
   parseFileBuffer,
   setConfig,
   getConfig,
   getConfigVal
 }
-
